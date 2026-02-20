@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -100,11 +102,28 @@ class _AccountState extends State<Account> {
                 .reauthenticateWithCredential(
                   credential,
                 );
-            FirebaseFirestore.instance
+            BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 2.0,
+                sigmaY: 2.0,
+              ),
+              child:
+                  const CircularProgressIndicator(),
+            );
+            var fav = await FirebaseFirestore
+                .instance
+                .collection('user')
+                .doc(user.uid)
+                .collection('favourites')
+                .get();
+            for (var doc in fav.docs) {
+              await doc.reference.delete();
+            }
+            await FirebaseFirestore.instance
                 .collection('user')
                 .doc(user.uid)
                 .delete();
-            user.delete();
+            await user.delete();
             await GoogleSignIn().disconnect();
           } else {}
         } catch (e) {
@@ -137,7 +156,9 @@ class _AccountState extends State<Account> {
           'Email has been sent to $email',
           '',
           snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(milliseconds: 2000),
+          duration: const Duration(
+            milliseconds: 2000,
+          ),
           animationDuration: const Duration(
             milliseconds: 300,
           ),
@@ -147,7 +168,9 @@ class _AccountState extends State<Account> {
           'Error',
           'You are signed in with Google. Please manage your password through your Google Account settings.',
           snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(milliseconds: 2000),
+          duration: const Duration(
+            milliseconds: 2000,
+          ),
           animationDuration: const Duration(
             milliseconds: 300,
           ),
