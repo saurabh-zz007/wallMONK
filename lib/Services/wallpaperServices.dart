@@ -19,7 +19,7 @@ class Wallpaperservices {
     try {
       final response = await http.get(
         Uri.parse(url),
-        headers: {'Authorization': APIkey},
+        headers: {'Authorization': APIkey!},
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(
