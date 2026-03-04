@@ -1,10 +1,9 @@
 import 'dart:convert';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class Wallpaperservices {
-  static const String APIkey =
-      'Neh41T8csj9OMWBrXYQcjiDUZwlqRibKclszS3tRcPLGwlYaSnryJZzz';
+  static String? APIkey = dotenv.env['API_KEY'];
   Future<List<dynamic>> fetchWallpaper({
     required int page,
     String? query,

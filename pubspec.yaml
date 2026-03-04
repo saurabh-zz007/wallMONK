@@ -51,6 +51,7 @@ dependencies:
   fluttertoast: ^8.2.14
   cached_network_image: ^3.4.1
   flutter_launcher_icons: 
+  flutter_dotenv: ^6.0.0
   
 
 dev_dependencies:

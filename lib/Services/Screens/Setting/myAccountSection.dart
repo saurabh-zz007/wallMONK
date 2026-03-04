@@ -102,14 +102,7 @@ class _AccountState extends State<Account> {
                 .reauthenticateWithCredential(
                   credential,
                 );
-            BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 2.0,
-                sigmaY: 2.0,
-              ),
-              child:
-                  const CircularProgressIndicator(),
-            );
+            
             var fav = await FirebaseFirestore
                 .instance
                 .collection('user')
