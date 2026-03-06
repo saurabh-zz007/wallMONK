@@ -106,186 +106,203 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
       ),
-      body: CustomScrollView(
-        controller: widget._scrollController,
-        slivers: [
-          const SliverPadding(
-            padding: EdgeInsetsGeometry.only(
-              top: 70,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+        ),
+        child: CustomScrollView(
+          controller: widget._scrollController,
+          slivers: [
+            const SliverPadding(
+              padding: EdgeInsetsGeometry.only(
+                top: 70,
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 120,
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 120,
 
-              width: double.infinity,
-              child: ListView.builder(
-                itemCount: catagoryNames.length,
-                scrollDirection: Axis.horizontal,
+                width: double.infinity,
+                child: ListView.builder(
+                  itemCount: catagoryNames.length,
+                  scrollDirection:
+                      Axis.horizontal,
 
-                itemBuilder: (context, index) {
-                  bool isSelected =
-                      index == selectedCat;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        widget.search = isSelected
-                            ? ''
-                            : catagoryNames[index];
-                        selectedCat = isSelected
-                            ? -1
-                            : index;
-                        Images.clear();
+                  itemBuilder: (context, index) {
+                    bool isSelected =
+                        index == selectedCat;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          widget.search =
+                              isSelected
+                              ? ''
+                              : catagoryNames[index];
+                          selectedCat = isSelected
+                              ? -1
+                              : index;
+                          Images.clear();
 
-                        _page = 1;
-                        fetchAPI();
-                      });
-                    },
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.all(
-                            8.0,
-                          ),
-                      child: AnimatedScale(
-                        scale: isSelected
-                            ? 1.1
-                            : 1,
-                        duration: const Duration(
-                          milliseconds: 200,
-                        ),
-                        child: Material(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadiusGeometry.circular(
-                                  10,
-                                ),
-                            side: BorderSide(
-                              width: isSelected
-                                  ? 4
-                                  : 1,
-                              color: isSelected
-                                  ? Colors.white54
-                                  : Colors
-                                        .white24,
+                          _page = 1;
+                          fetchAPI();
+                        });
+                      },
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.all(
+                              8.0,
                             ),
-                          ),
-                          child: MyCatagoryPage(
-                            catagoryLink:
-                                catagoryBackgroundUrl[index],
-                            catagoryName:
-                                catagoryNames[index],
+                        child: AnimatedScale(
+                          scale: isSelected
+                              ? 1.1
+                              : 1,
+                          duration:
+                              const Duration(
+                                milliseconds: 200,
+                              ),
+                          child: Material(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadiusGeometry.circular(
+                                    10,
+                                  ),
+                              side: BorderSide(
+                                width: isSelected
+                                    ? 4
+                                    : 1,
+                                color: isSelected
+                                    ? Colors
+                                          .white54
+                                    : Colors
+                                          .white24,
+                              ),
+                            ),
+                            child: MyCatagoryPage(
+                              catagoryLink:
+                                  catagoryBackgroundUrl[index],
+                              catagoryName:
+                                  catagoryNames[index],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          const SliverPadding(
-            padding: EdgeInsetsGeometry.only(
-              top: 10,
+            const SliverPadding(
+              padding: EdgeInsetsGeometry.only(
+                top: 10,
+                left: 16,
+                right: 16,
+              ),
             ),
-          ),
-          SliverMasonryGrid.count(
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 20,
-            crossAxisCount: setting.gridCol.value
-                .toInt(),
-            childCount: Images.length,
-            itemBuilder: (context, index) {
-              widget.count =
-                  (index.toDouble() %
-                      setting.gridCol.value) +
-                  1;
-              return GestureDetector(
-                onTap: () {
-                  Get.to(
-                    Mywallpaperprevpage(
-                      url:
-                          Images[index]['src']['portrait'],
-                      title: Images[index]['alt'],
-                      photographer:
-                          Images[index]['photographer'],
-                      uniqueId:
-                          Images[index]['id'],
-                    ),
-                  );
-                },
-                child: Material(
-                  borderRadius:
-                      BorderRadius.circular(20.0),
-                  elevation: 8,
-                  shadowColor: HexColor(
-                    Images[index]['avg_color'],
-                  ),
-
-                  child: ClipRRect(
+            SliverMasonryGrid.count(
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 20,
+              crossAxisCount: setting
+                  .gridCol
+                  .value
+                  .toInt(),
+              childCount: Images.length,
+              itemBuilder: (context, index) {
+                widget.count =
+                    (index.toDouble() %
+                        setting.gridCol.value) +
+                    1;
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      Mywallpaperprevpage(
+                        url:
+                            Images[index]['src']['portrait'],
+                        title:
+                            Images[index]['alt'],
+                        photographer:
+                            Images[index]['photographer'],
+                        uniqueId:
+                            Images[index]['id'],
+                      ),
+                    );
+                  },
+                  child: Material(
                     borderRadius:
                         BorderRadius.circular(
                           20.0,
                         ),
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          Images[index]['src'][setting
-                              .previewQuality
-                              .value],
-                      progressIndicatorBuilder:
-                          (
-                            context,
-                            url,
-                            progress,
-                          ) => Center(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.all(
-                                    8.0,
-                                  ),
-                              child:
-                                  CircularProgressIndicator(
-                                    value: progress
-                                        .progress,
-                                  ),
-                            ),
-                          ),
-                      imageBuilder:
-                          (
-                            context,
-                            imageProvider,
-                          ) => Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image:
-                                    imageProvider,
+                    elevation: 8,
+                    shadowColor: HexColor(
+                      Images[index]['avg_color'],
+                    ),
 
-                                fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(
+                            20.0,
+                          ),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            Images[index]['src'][setting
+                                .previewQuality
+                                .value],
+                        progressIndicatorBuilder:
+                            (
+                              context,
+                              url,
+                              progress,
+                            ) => Center(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.all(
+                                      8.0,
+                                    ),
+                                child: CircularProgressIndicator(
+                                  value: progress
+                                      .progress,
+                                ),
                               ),
                             ),
-                          ),
-                      height:
-                          150 * widget.count > 300
-                          ? 300
-                          : 150 * widget.count <
-                                200
-                          ? 200
-                          : 150 * widget.count,
-                      errorWidget:
-                          (
-                            context,
-                            url,
-                            error,
-                          ) => const Icon(
-                            Icons.error_outline,
-                            color: Colors.red,
-                          ),
+                        imageBuilder:
+                            (
+                              context,
+                              imageProvider,
+                            ) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image:
+                                      imageProvider,
+
+                                  fit: BoxFit
+                                      .cover,
+                                ),
+                              ),
+                            ),
+                        height:
+                            150 * widget.count >
+                                300
+                            ? 300
+                            : 150 * widget.count <
+                                  200
+                            ? 200
+                            : 150 * widget.count,
+                        errorWidget:
+                            (
+                              context,
+                              url,
+                              error,
+                            ) => const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                            ),
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

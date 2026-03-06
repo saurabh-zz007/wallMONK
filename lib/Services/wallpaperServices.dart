@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 class Wallpaperservices {
   static String? APIkey = dotenv.env['API_KEY'];
+
   Future<List<dynamic>> fetchWallpaper({
     required int page,
     String? query,

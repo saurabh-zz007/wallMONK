@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -102,13 +100,14 @@ class _AccountState extends State<Account> {
                 .reauthenticateWithCredential(
                   credential,
                 );
-            
+
             var fav = await FirebaseFirestore
                 .instance
                 .collection('user')
                 .doc(user.uid)
                 .collection('favourites')
                 .get();
+
             for (var doc in fav.docs) {
               await doc.reference.delete();
             }

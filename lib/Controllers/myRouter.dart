@@ -281,7 +281,7 @@ class _MyRouterPageState
                             _openRout =
                                 !_openRout;
                             page =
-                                const MyFavouritesPage();
+                                MyFavouritesPage();
                           });
                         },
                       ),
