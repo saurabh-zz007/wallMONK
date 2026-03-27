@@ -6,7 +6,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:signin_page/Controllers/myGlobalSettingController.dart';
 import 'package:signin_page/Services/Screens/myWallpaperPrevPage.dart';
 
