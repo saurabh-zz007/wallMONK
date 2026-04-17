@@ -5,6 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalSetting extends GetxController {
   late RxBool isDarkMode = true.obs;
+  late RxBool isGuestMode = false.obs;
+  late RxString userName = 'Guest'.obs;
+  late RxString userEmail = ''.obs;
+  late RxString userPhotoURL = ''.obs;
   late RxDouble gridCol = 2.0.obs;
   late RxString previewQuality = 'portrait'.obs;
   var appVersion = 'Loading...'.obs;

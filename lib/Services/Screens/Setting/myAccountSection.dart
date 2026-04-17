@@ -3,11 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:signin_page/AuthenticationLogic/signUpPage.dart';
+import 'package:signin_page/Controllers/myGlobalSettingController.dart';
 import 'package:signin_page/Services/Screens/Setting/mySectionCardWithoutSideButton.dart';
 import 'package:signin_page/Services/Screens/popAlert.dart';
 
 class Account extends StatefulWidget {
-  const Account({super.key});
+  final setting = Get.find<GlobalSetting>();
+   Account({super.key});
 
   @override
   State<Account> createState() => _AccountState();
@@ -60,6 +63,9 @@ class _AccountState extends State<Account> {
           );
       if (shouldSignOut) {
         try {
+          if(widget.setting.isGuestMode.value){
+            Get.offAll(MySignUpPage());
+          }
           await FirebaseAuth.instance.signOut();
           await GoogleSignIn().disconnect();
         } catch (e) {
@@ -117,67 +123,21 @@ class _AccountState extends State<Account> {
                 .delete();
             await user.delete();
             await GoogleSignIn().disconnect();
-          } else {}
+          } 
         } catch (e) {
           Get.snackbar('Error', e.toString());
         }
       }
     }
 
-    Future<void> changePassword() async {
-      String provider = '';
-      final user =
-          FirebaseAuth.instance.currentUser;
-      for (final userProvider
-          in user!.providerData) {
-        provider = userProvider.providerId;
-      }
-      final alert = dialogService();
-      final reset = await alert.showDialogBox(
-        'Change Password',
-        'For security, we need to verify your identity. We will send a password reset link to your registered email ${FirebaseAuth.instance.currentUser!.email}. Please click the link to set a new password.',
-        'Send Reset Link',
-      );
-      if (provider != 'google.com' && reset) {
-        final email = user.email;
-        await FirebaseAuth.instance
-            .sendPasswordResetEmail(
-              email: email!,
-            );
-        Get.snackbar(
-          'Email has been sent to $email',
-          '',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(
-            milliseconds: 2000,
-          ),
-          animationDuration: const Duration(
-            milliseconds: 300,
-          ),
-        );
-      } else if (reset) {
-        Get.snackbar(
-          'Error',
-          'You are signed in with Google. Please manage your password through your Google Account settings.',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(
-            milliseconds: 2000,
-          ),
-          animationDuration: const Duration(
-            milliseconds: 300,
-          ),
-        );
-      }
-    }
+   
 
     return MySectionCardWithoutSideButtons(
       titles: const [
-        'Change Password',
         'Sign out',
         'Delete Account',
       ],
       functions: [
-        changePassword,
         signOut,
         deletAccount,
       ],

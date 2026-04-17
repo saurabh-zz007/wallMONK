@@ -22,16 +22,6 @@ class MyHomePage extends StatefulWidget {
   String search = '';
   final ScrollController _scrollController =
       ScrollController();
-  final String? email =
-      FirebaseAuth.instance.currentUser != null
-      ? FirebaseAuth.instance.currentUser?.email!
-      : "";
-  final String displayName =
-      FirebaseAuth
-          .instance
-          .currentUser
-          ?.displayName ??
-      "";
   @override
   State<MyHomePage> createState() =>
       _MyHomePageState();

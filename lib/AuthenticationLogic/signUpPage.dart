@@ -1,21 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:signin_page/AuthenticationLogic/googleSignIn.dart';
-
-import 'package:signin_page/AuthenticationLogic/loginPage.dart';
-import 'package:signin_page/AuthenticationLogic/wraper.dart';
+import 'package:signin_page/Controllers/myGlobalSettingController.dart';
+import 'package:signin_page/Controllers/myRouter.dart';
+import 'package:signin_page/core/widgets/expandableButtons.dart';
 
 class MySignUpPage extends StatefulWidget {
   MySignUpPage({super.key});
-  TextEditingController emailController =
-      TextEditingController();
-  TextEditingController passwordController =
-      TextEditingController();
-  TextEditingController nameController =
-      TextEditingController();
 
   @override
   State<MySignUpPage> createState() =>
@@ -24,51 +19,12 @@ class MySignUpPage extends StatefulWidget {
 
 class _MySignUpPageState
     extends State<MySignUpPage> {
-  bool _isloading = false;
-  Future<void> signUp() async {
-    if (_isloading) return;
-    if (widget.nameController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg:
-            'Error: Please enter valid credentials.',
-        toastLength: Toast.LENGTH_LONG,
-      );
-    } else {
-      setState(() {
-        _isloading = true;
-      });
-      try {
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-              email: widget.emailController.text,
-              password:
-                  widget.passwordController.text,
-            );
-
-        await FirebaseAuth.instance.currentUser
-            ?.updateProfile(
-              displayName:
-                  widget.nameController.text,
-            );
-
-        Get.offAll(() => const Wrapper());
-      } catch (e) {
-        Fluttertoast.showToast(
-          msg: 'Error: $e',
-          toastLength: Toast.LENGTH_LONG,
-        );
-      } finally {
-        if (mounted) {
-          setState(() {
-            _isloading = false;
-          });
-        }
-      }
-    }
-  }
+  
+  
 
   @override
   Widget build(BuildContext context) {
+    final setting = Get.find<GlobalSetting>();
     return Scaffold(
       body: Center(
         child: ConstrainedBox(
@@ -99,147 +55,45 @@ class _MySignUpPageState
                       CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Sign Up",
+                      "Welcome!",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight:
                             FontWeight.bold,
                       ),
                     ),
+                    
+                    const Text(
+                      "Continue with..."
+                    ),
                     const SizedBox(height: 50),
 
-                    TextField(
-                      controller:
-                          widget.nameController,
-                      decoration: const InputDecoration(
-                        label: Text("Full Name"),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    TextField(
-                      controller:
-                          widget.emailController,
-                      decoration: const InputDecoration(
-                        label: Text(
-                          "Email or Username",
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    TextField(
-                      controller: widget
-                          .passwordController,
-                      decoration: const InputDecoration(
-                        label: Text("Password"),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        const Text(
-                          "Already have an account?",
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(
-                              context,
-                            ).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const MyLogInPage(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Log In",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment
-                              .spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadiusGeometry.all(
-                                    Radius.circular(
-                                      0,
-                                    ),
-                                  ),
-                            ),
-                            backgroundColor:
-                                Colors.green,
-                          ),
-
+                        ExpandedButton(
+                          buttonText: "Google",
+                          buttonColor: Colors.blue,
                           onPressed: () {
                             GoogleAuth();
                           },
-                          child: const Text(
-                            "Google",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                          buttonIcon: const FaIcon(
+                            FontAwesomeIcons.google,
+                            color: Colors.white,
                           ),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadiusGeometry.all(
-                                    Radius.circular(
-                                      0,
-                                    ),
-                                  ),
-                            ),
-                            backgroundColor:
-                                _isloading
-                                ? Colors.black54
-                                : Colors.blue,
-                          ),
-
-                          onPressed: () {
-                            signUp();
-                          },
-                          child: _isloading
-                              ? const Center(
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.all(
-                                          2.0,
-                                        ),
-                                    child: CircularProgressIndicator(
-                                      backgroundColor:
-                                          Colors
-                                              .transparent,
-                                    ),
-                                  ),
-                                )
-                              : const Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                    color: Colors
-                                        .white,
-                                  ),
-                                ),
+                        const SizedBox(height: 20,),
+                        ExpandedButton(buttonText: "Guest",
+                        buttonColor: Colors.red,
+                        onPressed: (){
+                          setting.isGuestMode.value = true;
+                        },
+                        buttonIcon: const FaIcon(
+                          FontAwesomeIcons.user,
+                          color: Colors.white,
                         ),
+                        )
+                        
                       ],
                     ),
-                  ],
-                ),
+                  
               ),
             ),
           ),

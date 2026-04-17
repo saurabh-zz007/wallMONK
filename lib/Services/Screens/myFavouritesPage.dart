@@ -3,11 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/state_manager.dart';
+import 'package:lottie/lottie.dart';
+import 'package:signin_page/AuthenticationLogic/googleSignIn.dart';
 import 'package:signin_page/Controllers/myGlobalSettingController.dart';
 import 'package:signin_page/Services/Screens/myWallpaperPrevPage.dart';
+import 'package:signin_page/core/widgets/expandableButtons.dart';
 
 class MyFavouritesPage extends StatefulWidget {
   MyFavouritesPage({super.key});
@@ -42,8 +46,61 @@ class _MyFavouritesPageState
   @override
   Widget build(BuildContext context) {
     final setting = Get.find<GlobalSetting>();
-
-    return Padding(
+    return Obx((){
+      if(setting.isGuestMode.value == true){
+        return Column(
+        mainAxisAlignment:
+            MainAxisAlignment.center,
+        crossAxisAlignment:
+            CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height:
+                MediaQuery.of(
+                  context,
+                ).size.height *
+                0.3,
+            child: Lottie.asset(
+              'assets/rocket.json',
+            ),
+          ),
+          Text(
+            "Please log in to continue",
+            style: TextStyle(
+              fontSize:
+                  MediaQuery.of(
+                    context,
+                  ).size.height *
+                  0.02,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: ExpandedButton(
+                            buttonText: "Google",
+                            buttonColor: Colors.blue,
+                            onPressed: () {
+                              GoogleAuth();
+                            },
+                            buttonIcon: const FaIcon(
+                              FontAwesomeIcons.google,
+                              color: Colors.white,
+                            ),
+                          ),
+          ),
+          SizedBox(
+            height:
+                MediaQuery.of(
+                  context,
+                ).size.height *
+                0.2,
+          ),
+        ],
+      );
+      }
+      else{
+        return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment:
@@ -178,5 +235,9 @@ class _MyFavouritesPageState
         ],
       ),
     );
+      }}  
+    );
+    
+    
   }
 }

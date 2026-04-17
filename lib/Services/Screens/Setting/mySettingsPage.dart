@@ -53,7 +53,7 @@ class _MySettingsPageState
                   const Appearence(),
                   const Performance(),
                   //Download(),
-                  const Account(),
+                  Account(),
                   const SizedBox(height: 30),
                   Obx(
                     () => Text(

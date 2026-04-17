@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:signin_page/Controllers/myRouter.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/state_manager.dart';
 import 'package:signin_page/AuthenticationLogic/signUpPage.dart';
-import 'package:signin_page/AuthenticationLogic/verify.dart';
+import 'package:signin_page/Controllers/myGlobalSettingController.dart';
+import 'package:signin_page/Controllers/myRouter.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({super.key});
@@ -14,22 +16,26 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
+    final setting = Get.find<GlobalSetting>();
+    return Obx((){
+      if(setting.isGuestMode.value){
+        return const MyRouterPage();
+      }
+    
+    return StreamBuilder(
         stream: FirebaseAuth.instance
             .authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data!.emailVerified) {
-              return const MyRouterPage();
-            } else {
-              return const MyVarificationPage();
-            }
+           
+            setting.isGuestMode.value = false;
+            
+            return const MyRouterPage();
           } else {
             return MySignUpPage();
           }
         },
-      ),
     );
-  }
+  });
+}
 }

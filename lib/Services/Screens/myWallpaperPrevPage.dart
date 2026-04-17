@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_media_downloader/flutter_media_downloader.dart';
 import 'package:async_wallpaper/async_wallpaper.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 //import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:signin_page/Controllers/myGlobalSettingController.dart';
 
 class Mywallpaperprevpage extends StatefulWidget {
   String url;
@@ -15,6 +17,7 @@ class Mywallpaperprevpage extends StatefulWidget {
   String photographer;
   int uniqueId;
   bool _isFavorite = false;
+  final setting = Get.find<GlobalSetting>();
   Mywallpaperprevpage({
     super.key,
     required this.url,
@@ -36,8 +39,13 @@ class _MywallpaperprevpageState
     super.initState();
   }
 
-  final user = FirebaseAuth.instance.currentUser;
+  
   Future<void> checkFav() async {
+    if(widget.setting.isGuestMode.value){
+      
+        return;
+    }
+    final user = FirebaseAuth.instance.currentUser;
     final doc = await FirebaseFirestore.instance
         .collection('user')
         .doc(user!.uid)
@@ -49,7 +57,22 @@ class _MywallpaperprevpageState
     });
   }
 
-  void removeFromFavorites() {
+  void removeFromFavorites() {    
+    if(widget.setting.isGuestMode.value){
+      Get.snackbar(
+          'Please sign in to add favourites',
+          '',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(
+            milliseconds: 2000,
+          ),
+          animationDuration: const Duration(
+            milliseconds: 300,
+          ),
+        );
+        return;
+    }
+    final user = FirebaseAuth.instance.currentUser;
     setState(() {
       widget._isFavorite = false;
       FirebaseFirestore.instance
@@ -62,6 +85,21 @@ class _MywallpaperprevpageState
   }
 
   void addToFavorites() {
+    if(widget.setting.isGuestMode.value){
+      Get.snackbar(
+          'Please sign in to add favourites',
+          '',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(
+            milliseconds: 2000,
+          ),
+          animationDuration: const Duration(
+            milliseconds: 300,
+          ),
+        );
+        return;
+    }
+    final user = FirebaseAuth.instance.currentUser;
     setState(() {
       FirebaseFirestore.instance
           .collection('user')
@@ -122,6 +160,7 @@ class _MywallpaperprevpageState
 
   @override
   Widget build(BuildContext context) {
+    
     return SafeArea(
       child: Stack(
         children: [
@@ -318,7 +357,7 @@ class _MywallpaperprevpageState
                   padding: const EdgeInsets.all(
                     8.0,
                   ),
-                  child: widget._isFavorite
+                  child:widget._isFavorite
                       ? const Icon(
                           Icons.favorite,
                           color: Colors.redAccent,
