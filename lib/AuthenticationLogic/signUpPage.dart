@@ -67,27 +67,29 @@ class _MySignUpPageState
                     const SizedBox(height: 50),
 
                         ExpandedButton(
-                          buttonText: "Google",
-                          buttonColor: Colors.blue,
-                          onPressed: () {
-                            GoogleAuth();
+                            buttonText: "Google",
+                            buttonColor: Colors.blue,
+                            onPressed: () {
+                              GoogleAuth();
+                            },
+                            buttonIcon: const FaIcon(
+                              FontAwesomeIcons.google,
+                              color: Colors.white,
+                            ),
+                          ),
+                       
+                        const SizedBox(height: 20,),
+                        ExpandedButton(buttonText: "Guest",
+                          buttonColor: Colors.red,
+                          onPressed: (){
+                            setting.isGuestMode.value = true;
                           },
                           buttonIcon: const FaIcon(
-                            FontAwesomeIcons.google,
+                            FontAwesomeIcons.user,
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 20,),
-                        ExpandedButton(buttonText: "Guest",
-                        buttonColor: Colors.red,
-                        onPressed: (){
-                          setting.isGuestMode.value = true;
-                        },
-                        buttonIcon: const FaIcon(
-                          FontAwesomeIcons.user,
-                          color: Colors.white,
-                        ),
-                        )
+                        
                         
                       ],
                     ),

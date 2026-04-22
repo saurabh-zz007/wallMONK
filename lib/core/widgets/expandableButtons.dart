@@ -18,40 +18,38 @@ class _ExpandedButtonState extends State<ExpandedButton> {
     return SizedBox(
       height: 50,
       width: double.infinity,
-      child: Expanded(
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadiusGeometry.all(
-                                        Radius.circular(
-                                          16,
-                                        ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadiusGeometry.all(
+                                      Radius.circular(
+                                        16,
                                       ),
-                                ),
-                                backgroundColor:
-                                    widget.buttonColor,
-                              ),
-                            
-                              onPressed: () {
-                                widget.onPressed();
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                
-                                children: [
-                                  widget.buttonIcon,
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    widget.buttonText,
-                                    style: const TextStyle(
-                                      color: Colors.white,
                                     ),
-                                  ),
-                                ],
                               ),
+                              backgroundColor:
+                                  widget.buttonColor,
                             ),
-      ),
+                          
+                            onPressed: () {
+                              widget.onPressed();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              
+                              children: [
+                                widget.buttonIcon,
+                                const SizedBox(width: 10),
+                                Text(
+                                  widget.buttonText,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
     );
   }
 }
