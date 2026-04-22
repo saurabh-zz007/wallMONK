@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:signin_page/AuthenticationLogic/googleSignIn.dart';
 import 'package:signin_page/Controllers/myGlobalSettingController.dart';
-import 'package:signin_page/Controllers/myRouter.dart';
 import 'package:signin_page/core/widgets/expandableButtons.dart';
 
 class MySignUpPage extends StatefulWidget {
